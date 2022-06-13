@@ -52,6 +52,7 @@ function SignIn() {
       <div
         style={{
           margin: "0 auto",
+          marginTop: 70,
           verticalAlign: "center",
           border: "1px solid #BED7E1",
           borderRadius: 10,
@@ -95,9 +96,38 @@ function SignIn() {
             </div>
           </div>
         ) : (
-          <div style={{ margin: "auto" }}>
-            <div>Sign in to continue</div>
-            <button onClick={signIn}>SignIn</button>
+          <div
+            style={{ margin: "auto", display: "flex", flexDirection: "column" }}
+          >
+            <span style={{ fontFamily: "monospace", fontSize: 18 }}>
+              Sign in to continue
+            </span>
+            <div
+              onClick={signIn}
+              style={{
+                border: "1px solid #BED7E1",
+                backgroundColor: "#BED7E1",
+                borderRadius: 5,
+                height: 30,
+                display: "flex",
+                width: 80,
+                cursor: "pointer",
+                margin: "auto",
+                marginTop: 15,
+              }}
+            >
+              <div
+                style={{
+                  margin: "auto",
+                  fontWeight: "bold",
+                  fontFamily: "monospace",
+                  color: "white",
+                  fontSize: 14,
+                }}
+              >
+                SignIn
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -37,7 +37,7 @@ function ViewCertificate() {
 
   const setCurrentCertificateFunc = async (cert) => {
     const db = getFirestore();
-    let imgRef = ref(getStorage(), `${store.user.uid}/certificates/${cert}`);
+    let imgRef = ref(getStorage(), `/certificates/${cert}`);
     getDownloadURL(imgRef).then((url) => {
       setCurrentCertificate({ cert, url });
     });
@@ -46,29 +46,55 @@ function ViewCertificate() {
   };
 
   return (
-    <div>
-      {currentCertificate && certificateMetaData && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <img
-            height={window.innerHeight * 0.9}
-            src={currentCertificate.url}
-            alt="certificate"
-            style={{ margin: "auto" }}
-          />
-          <div style={{ margin: "10px auto" }}>
-            Recepient Name:{certificateMetaData.data.receiverName}
+    <div style={{ margin: 30, width: "100%", height: "80%", display: "flex" }}>
+      {currentCertificate &&
+        certificateMetaData &&
+        (certificateMetaData.data.isShareable ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              margin: "auto",
+            }}
+          >
+            <img
+              height={window.innerHeight * 0.7}
+              src={currentCertificate.url}
+              alt="certificate"
+              style={{ margin: "auto" }}
+            />
+            <div
+              style={{
+                margin: "10px auto",
+                fontFamily: "monospace",
+                fontSize: 16,
+              }}
+            >
+              Recepient Name:{certificateMetaData.data.receiverName}
+            </div>
+            <div
+              style={{
+                margin: "10px auto",
+                fontFamily: "monospace",
+                fontSize: 16,
+              }}
+            >
+              Recepient Email:{certificateMetaData.data.receiverEmail}
+            </div>
           </div>
-          <div style={{ margin: "10px auto" }}>
-            Recepient Email:{certificateMetaData.data.receiverEmail}
+        ) : (
+          <div
+            style={{
+              fontFamily: "monospace",
+              margin: "60px auto",
+              fontSize: 20,
+              color: "gray",
+            }}
+          >
+            Certificate has been prevented from sharing by receiver.
           </div>
-        </div>
-      )}
+        ))}
     </div>
   );
 }

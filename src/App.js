@@ -10,6 +10,9 @@ import Context from "./store/context";
 import { signIn } from "./store";
 import { setLoading } from "./store";
 import ViewCertificate from "./components/viewCertificate";
+import RecipientPortal from "./components/recipientPortal";
+import RequestedChanges from "./components/requestedChanges";
+
 function App() {
   const { store, dispatch } = useContext(Context);
   const auth = getAuth();
@@ -42,12 +45,93 @@ function App() {
       }
     });
   });
-  console.log(pathname);
 
   useEffect(() => {
     dispatch(signIn(user));
     console.log("UserId from App.js", user.uid);
   }, [user]);
+
+  const toolbar = () => {
+    if (pathname === "/view_certificate") {
+      return;
+    } else if (pathname === "/recipient_portal") {
+      return (
+        <div
+          style={{
+            width: "100%",
+            height: "50px",
+            backgroundColor: "#dfedf2",
+            boxShadow: "10px 1px 3px rgba(50, 50, 50, 0.25)",
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <div
+            style={toolBarStyles}
+            onClick={() => {
+              window.location.replace("/signin");
+            }}
+          >
+            SignIn
+          </div>
+          <div
+            style={toolBarStyles}
+            onClick={() => {
+              window.location.replace("/recipient_portal/my_certificates");
+            }}
+          >
+            My Certificates
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "50px",
+          backgroundColor: "#dfedf2",
+          boxShadow: "10px 1px 3px rgba(50, 50, 50, 0.25)",
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <div
+          style={toolBarStyles}
+          onClick={() => {
+            window.location.replace("/signin");
+          }}
+        >
+          SignIn
+        </div>
+        <div
+          style={toolBarStyles}
+          onClick={() => {
+            window.location.replace("/certificates");
+          }}
+        >
+          Certificates
+        </div>
+        <div
+          style={toolBarStyles}
+          onClick={() => {
+            window.location.replace("/templates");
+          }}
+        >
+          Templates
+        </div>
+        <div
+          style={toolBarStyles}
+          onClick={() => {
+            window.location.replace("/view_requested_changes");
+          }}
+        >
+          Change Requests
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
@@ -68,51 +152,17 @@ function App() {
             cursor: "pointer",
             padding: "15px 0",
           }}
+          onClick={() => {
+            window.location = "/signin";
+          }}
         >
           Certify
         </div>
       </div>
-
       <Router>
         <Switch>
           <>
-            {pathname != "/view_certificate" && (
-              <div
-                style={{
-                  width: "100%",
-                  height: "50px",
-                  backgroundColor: "#dfedf2",
-                  boxShadow: "10px 1px 3px rgba(50, 50, 50, 0.25)",
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <div
-                  style={toolBarStyles}
-                  onClick={() => {
-                    window.location.replace("/signin");
-                  }}
-                >
-                  SignIn
-                </div>
-                <div
-                  style={toolBarStyles}
-                  onClick={() => {
-                    window.location.replace("/certificates");
-                  }}
-                >
-                  Certificates
-                </div>
-                <div
-                  style={toolBarStyles}
-                  onClick={() => {
-                    window.location.replace("/templates");
-                  }}
-                >
-                  Templates
-                </div>
-              </div>
-            )}
+            {toolbar()}
             {store.user.uid ? (
               <>
                 <Route path="/signin" exact>
@@ -124,14 +174,20 @@ function App() {
                 <Route path="/certificates" exact>
                   <Certificate />
                 </Route>
+                <Route path="/view_requested_changes" exact>
+                  <RequestedChanges />
+                </Route>
                 <Route path="/view_certificate/:id" exact>
                   <ViewCertificate />
                 </Route>
+                <Route path="/recipient_portal/my_certificates" exact>
+                  <RecipientPortal />
+                </Route>
               </>
             ) : (
-              <div>
-                No user Signed in <SignIn />
-              </div>
+              <>
+                <SignIn />
+              </>
             )}
           </>
         </Switch>
