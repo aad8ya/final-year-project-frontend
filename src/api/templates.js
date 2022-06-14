@@ -18,6 +18,16 @@ import {
   deleteObject,
   ref,
 } from "firebase/storage";
+import {
+  Client,
+  PrivateKey,
+  AccountId,
+  AccountCreateTransaction,
+  AccountBalanceQuery,
+  Hbar,
+  FileAppendTransaction,
+  FileContentsQuery,
+} from "@hashgraph/sdk";
 import { getNewImage } from "../store/templates/elements";
 
 export const createTemplate = async (info) => {
@@ -238,4 +248,55 @@ export const viewRequestedChanges = async (uid) => {
     }
   });
   return res;
+};
+
+export const getOneCertificate = async (id) => {
+  const db = getFirestore();
+  const result = await getDocs(
+    collection(db, "certificates"),
+    where("id", "==", id)
+  );
+  let res = [];
+  result.forEach((cert) => {
+    if (cert.id === id) {
+      let temp = {
+        id: cert.id,
+        data: cert.data(),
+      };
+      res.push(temp);
+    }
+  });
+  return res;
+};
+
+export const approveRequest = async (
+  certId,
+  requestId,
+  isApproved,
+  changes = {}
+) => {
+  const db = getFirestore();
+  const docRef = await doc(db, "changes_requested", requestId);
+  const result = updateDoc(docRef, {
+    waiting_for_approval: false,
+    is_approved: isApproved,
+  });
+
+  if (isApproved) {
+    const docRef2 = await doc(db, "certificates", certId);
+    const result2 = updateDoc(docRef2, {
+      receiverName: changes.newName,
+      receiverEmail: changes.newEmail,
+    });
+  }
+  return result;
+};
+
+export const getHederaFile = async (id) => {
+  const HederaClient = Client.forTestnet();
+  HederaClient.setOperator(process.env.OPERATOR_ID, process.env.OPERATOR_KEY);
+
+  const query = new FileContentsQuery().setFileId(id);
+  const contents = await query.execute(HederaClient);
+  return contents;
 };

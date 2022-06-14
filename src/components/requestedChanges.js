@@ -16,25 +16,12 @@ function RequestedChanges() {
   const { store } = React.useContext(Context);
   const [certificates, setCertificates] = useState([]);
   const [currentCertificate, setCurrentCertificate] = useState(null);
-  const [requestChanges, setRequestChanges] = useState(null);
-  const [templates, setTemplates] = useState([]);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [fields, setfields] = useState({});
-  const [selectedTemplateId, setSelectedTemplateId] = useState(null);
-  const [newReceiverName, setNewReceiverName] = useState(null);
-  const [selectedTemplateName, setSelectedTemplateName] = useState("");
-  const [newEmail, setNewEmail] = useState(null);
+  const [existingCertificate, setExistingCertificate] = useState(null);
 
   const labelStyles = {
     marginRight: 10,
     fontFamily: "monospace",
     fontSize: 16,
-  };
-
-  const resetRequestChanges = () => {
-    setRequestChanges(null);
-    setNewEmail(null);
-    setNewReceiverName(null);
   };
 
   useEffect(() => {
@@ -44,9 +31,11 @@ function RequestedChanges() {
   }, []);
 
   const setCurrentCertificateFunc = async (cert) => {
-    let imgRef = ref(getStorage(), `/certificates/${cert.data.name}`);
-    getDownloadURL(imgRef).then((url) => {
-      setCurrentCertificate({ cert, url });
+    api.getOneCertificate(cert.data.certificate_id).then((res) => {
+      setExistingCertificate(
+        res.find((x) => x.id === cert.data.certificate_id)
+      );
+      setCurrentCertificate(cert);
     });
   };
 
@@ -84,7 +73,6 @@ function RequestedChanges() {
                   marginLeft: 10,
                 }}
                 onClick={() => {
-                  resetRequestChanges();
                   setCurrentCertificateFunc(cert);
                 }}
               >
@@ -103,7 +91,109 @@ function RequestedChanges() {
             flexDirection: "column",
           }}
         >
-          Hello
+          {currentCertificate && (
+            <div
+              style={{
+                fontFamily: "monospace",
+                fontSize: 14,
+                margin: "20px auto",
+              }}
+            >
+              <div style={{ marginBottom: 20 }}>
+                <span style={{ fontWeight: "bold", fontSize: 20 }}>
+                  New Data
+                </span>
+                <div style={{ marginTop: 10, marginBottom: 5 }}>
+                  New Name: {currentCertificate.data.new_name}
+                </div>
+                <div style={{ marginBottom: 5 }}>
+                  New Email: {currentCertificate.data.new_email}
+                </div>
+              </div>
+              {existingCertificate && (
+                <div>
+                  <span style={{ fontWeight: "bold", fontSize: 20 }}>
+                    Existing Data
+                  </span>
+                  <div
+                    style={{
+                      marginTop: 10,
+                      marginBottom: 5,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Name:{existingCertificate.data.receiverName}
+                  </div>
+                  <div style={{ marginBottom: 5, fontWeight: "bold" }}>
+                    Email:{existingCertificate.data.receiverEmail}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Hedera FilleId: {existingCertificate.data.hederaFileId}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    College:{existingCertificate.data.college}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Batch:{existingCertificate.data.batch}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Degree:{existingCertificate.data.degree}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Department:{existingCertificate.data.department}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Roll No:{existingCertificate.data.rollNo}
+                  </div>
+                </div>
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  margintTop: 30,
+                }}
+              >
+                <div
+                  className="button button1"
+                  style={{
+                    margin: "auto 5px",
+                    border: "1px solid #BED7E1",
+                  }}
+                  onClick={() => {
+                    api.approveRequest(
+                      existingCertificate.id,
+                      currentCertificate.id,
+                      false
+                    );
+                  }}
+                >
+                  Reject
+                </div>
+                <div
+                  className="button button1"
+                  style={{
+                    margin: "auto 5px",
+                    border: "1px solid #BED7E1",
+                  }}
+                  onClick={() => {
+                    api.approveRequest(
+                      existingCertificate.id,
+                      currentCertificate.id,
+                      true,
+                      {
+                        newName: currentCertificate.data.new_name,
+                        newEmail: currentCertificate.data.new_email,
+                      }
+                    );
+                  }}
+                >
+                  Approve
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
