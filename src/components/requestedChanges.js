@@ -38,10 +38,9 @@ function RequestedChanges() {
   };
 
   useEffect(() => {
-    // api.viewRequestedChanges(store.user.id).then((res) => {
-    //   setCertificates(res);
-    //   console.log("++++", certificates);
-    // });
+    api.viewRequestedChanges(store.user.id).then((res) => {
+      setCertificates(res);
+    });
   }, []);
 
   const setCurrentCertificateFunc = async (cert) => {
@@ -73,25 +72,26 @@ function RequestedChanges() {
         >
           Changes Requested:
         </span>
-        {/* {certificates.map((cert) => {
-          return (
-            <div
-              className="button button1"
-              key={cert.id}
-              style={{
-                width: 200,
-                margin: "4px auto",
-                marginLeft: 10,
-              }}
-              onClick={() => {
-                resetRequestChanges();
-                setCurrentCertificateFunc(cert);
-              }}
-            >
-              {cert.data.receiverName}
-            </div>
-          );
-        })} */}
+        {certificates.length > 0 &&
+          certificates.map((cert) => {
+            return (
+              <div
+                className="button button1"
+                key={cert.id}
+                style={{
+                  width: 200,
+                  margin: "4px auto",
+                  marginLeft: 10,
+                }}
+                onClick={() => {
+                  resetRequestChanges();
+                  setCurrentCertificateFunc(cert);
+                }}
+              >
+                {cert.data.certificate_id}
+              </div>
+            );
+          })}
       </div>
       <div style={{ width: "80%", display: "flex" }}>
         <div

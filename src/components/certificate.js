@@ -16,12 +16,69 @@ function Certificate() {
   const [receiverName, setReceiverName] = useState(null);
   const [selectedTemplateName, setSelectedTemplateName] = useState("");
   const [email, setEmail] = useState(null);
+  const [college, setCollege] = useState(null);
+  const [batch, setBatch] = useState(null);
+  const [degree, setDegree] = useState(null);
+  const [department, setDepartment] = useState(null);
+  const [rollNo, setRollNo] = useState(null);
 
   const labelStyles = {
     marginRight: 10,
     fontFamily: "monospace",
     fontSize: 16,
   };
+
+  const mandatoryFields = [
+    {
+      fieldName: "Recipient Name",
+      onChangeFunc: (event) => {
+        setReceiverName(event.target.value);
+      },
+      placeHolder: "Name",
+    },
+    {
+      fieldName: "Email",
+      onChangeFunc: (event) => {
+        setEmail(event.target.value);
+      },
+      placeHolder: "Email ID",
+    },
+    {
+      fieldName: "College",
+      onChangeFunc: (event) => {
+        setCollege(event.target.value);
+      },
+      placeHolder: "College Name",
+    },
+    {
+      fieldName: "Batch",
+      onChangeFunc: (event) => {
+        setBatch(event.target.value);
+      },
+      placeHolder: "Batch (eg:2018-2022)",
+    },
+    {
+      fieldName: "Degree",
+      onChangeFunc: (event) => {
+        setDegree(event.target.value);
+      },
+      placeHolder: "Degree Name",
+    },
+    {
+      fieldName: "Department",
+      onChangeFunc: (event) => {
+        setDepartment(event.target.value);
+      },
+      placeHolder: "Department Name",
+    },
+    {
+      fieldName: "Roll No",
+      onChangeFunc: (event) => {
+        setRollNo(event.target.value);
+      },
+      placeHolder: "Student ID",
+    },
+  ];
 
   const createCertificate = (e) => {
     e.preventDefault();
@@ -33,6 +90,11 @@ function Certificate() {
       receiverEmail: email,
       fields: fields,
       isShareable: true,
+      college,
+      batch,
+      degree,
+      department,
+      rollNo,
     };
     let urls = `${env.url}/certificate/one`;
     console.log(urls);
@@ -136,10 +198,17 @@ function Certificate() {
           );
         })}
       </div>
-      <div style={{ width: "80%", display: "flex" }}>
+      <div
+        style={{
+          width: "80%",
+          display: "flex",
+          overflowY: "scroll",
+          fontSize: 14,
+        }}
+      >
         <div style={{ margin: 30 }}>
           {currentCertificate && (
-            <div style={{ margin: "auto" }}>
+            <div style={{ margin: "auto", fontFamily: "monospace" }}>
               <img
                 height={window.innerHeight * 0.7}
                 src={currentCertificate.url}
@@ -147,10 +216,10 @@ function Certificate() {
               />
               <div
                 style={{
-                  fontFamily: "monospace",
                   textDecoration: "underline",
                   color: "blue",
                   cursor: "pointer",
+                  marginBottom: 5,
                 }}
                 onClick={() => {
                   navigator.clipboard.writeText(
@@ -159,6 +228,30 @@ function Certificate() {
                   alert("Copied link to clipboard");
                 }}
               >{`localhost:3000/view_certificate/${currentCertificate.cert.data.name}`}</div>
+              <div style={{ marginBottom: 5 }}>
+                Hedera FilleId: {currentCertificate.cert.data.hederaFileId}
+              </div>
+              <div style={{ marginBottom: 5 }}>
+                Name:{currentCertificate.cert.data.receiverName}
+              </div>
+              <div style={{ marginBottom: 5 }}>
+                Email:{currentCertificate.cert.data.receiverEmail}
+              </div>
+              <div style={{ marginBottom: 5 }}>
+                College:{currentCertificate.cert.data.college}
+              </div>
+              <div style={{ marginBottom: 5 }}>
+                Batch:{currentCertificate.cert.data.batch}
+              </div>
+              <div style={{ marginBottom: 5 }}>
+                Degree:{currentCertificate.cert.data.degree}
+              </div>
+              <div style={{ marginBottom: 5 }}>
+                Department:{currentCertificate.cert.data.department}
+              </div>
+              <div style={{ marginBottom: 5 }}>
+                Roll No:{currentCertificate.cert.data.rollNo}
+              </div>
             </div>
           )}
           <div>
@@ -231,38 +324,26 @@ function Certificate() {
                     marginTop: 15,
                   }}
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      marginBottom: 10,
-                    }}
-                  >
-                    <label style={labelStyles}>Name of receiver</label>
-                    <input
-                      type="text"
-                      placeholder="Name"
-                      onChange={(e) => {
-                        setReceiverName(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      marginBottom: 10,
-                    }}
-                  >
-                    <label style={labelStyles}>Email of receiver</label>
-                    <input
-                      type="text"
-                      placeholder="Email"
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
-                    />
-                  </div>
+                  {mandatoryFields.map((mandatoryField) => {
+                    return (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          marginBottom: 10,
+                        }}
+                      >
+                        <label style={labelStyles}>
+                          {mandatoryField.fieldName}
+                        </label>
+                        <input
+                          type="text"
+                          placeholder={mandatoryField.placeHolder}
+                          onChange={(e) => mandatoryField.onChangeFunc(e)}
+                        />
+                      </div>
+                    );
+                  })}
                   {selectedTemplate.map((field) => {
                     return (
                       <div key={field} style={{ marginBottom: 10 }}>

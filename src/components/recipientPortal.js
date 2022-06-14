@@ -92,7 +92,7 @@ function RecipientPortal() {
           );
         })}
       </div>
-      <div style={{ width: "80%", display: "flex" }}>
+      <div style={{ width: "80%", display: "flex", overFlowY: "scroll" }}>
         <div
           style={{
             margin: "10px 30px",
@@ -154,7 +154,6 @@ function RecipientPortal() {
                       marginLeft: "auto",
                     }}
                     onClick={(e) => {
-                      console.log("++++", currentCertificate.cert);
                       api.requestChangeInCertificate(
                         currentCertificate.cert.id,
                         currentCertificate.cert.data.uid,
@@ -237,6 +236,38 @@ function RecipientPortal() {
                     src={currentCertificate.url}
                     alt="certificate"
                   />
+                </div>
+                <div
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: 14,
+                    margin: "auto",
+                  }}
+                >
+                  <div style={{ marginBottom: 5 }}>
+                    Hedera FilleId: {currentCertificate.cert.data.hederaFileId}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Name:{currentCertificate.cert.data.receiverName}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Email:{currentCertificate.cert.data.receiverEmail}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    College:{currentCertificate.cert.data.college}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Batch:{currentCertificate.cert.data.batch}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Degree:{currentCertificate.cert.data.degree}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Department:{currentCertificate.cert.data.department}
+                  </div>
+                  <div style={{ marginBottom: 5 }}>
+                    Roll No:{currentCertificate.cert.data.rollNo}
+                  </div>
                 </div>
               </>
             ))}

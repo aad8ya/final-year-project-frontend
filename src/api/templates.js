@@ -231,7 +231,11 @@ export const viewRequestedChanges = async (uid) => {
     collection(db, "changes_requested"),
     where("issuer_uid", "==", uid)
   );
-  console.log("++++", result);
-  const res = result.map((x) => x.waiting_for_approval === true);
+  let res = [];
+  result.forEach((x) => {
+    if (x.data().waiting_for_approval === true) {
+      res.push({ id: x.id, data: x.data() });
+    }
+  });
   return res;
 };

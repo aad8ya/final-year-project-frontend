@@ -56,6 +56,8 @@ function ViewCertificate() {
               flexDirection: "column",
               justifyContent: "center",
               margin: "auto",
+              fontFamily: "monospace",
+              fontSize: 16,
             }}
           >
             <img
@@ -64,23 +66,37 @@ function ViewCertificate() {
               alt="certificate"
               style={{ margin: "auto" }}
             />
-            <div
-              style={{
-                margin: "10px auto",
-                fontFamily: "monospace",
-                fontSize: 16,
-              }}
-            >
-              Recepient Name:{certificateMetaData.data.receiverName}
+            <div style={{ margin: "5px auto" }}>
+              <span style={{ fontWeight: "bold" }}>Hedera File ID:</span>
+              {certificateMetaData.data.hederaFileId}
             </div>
-            <div
-              style={{
-                margin: "10px auto",
-                fontFamily: "monospace",
-                fontSize: 16,
-              }}
-            >
-              Recepient Email:{certificateMetaData.data.receiverEmail}
+            <div style={{ margin: "5px auto" }}>
+              <span style={{ fontWeight: "bold" }}>Recepient Name:</span>
+              {certificateMetaData.data.receiverName}
+            </div>
+            <div style={{ margin: "5px auto" }}>
+              <span style={{ fontWeight: "bold" }}>Recepient Email:</span>
+              {certificateMetaData.data.receiverEmail}
+            </div>
+            <div style={{ margin: "5px auto" }}>
+              <span style={{ fontWeight: "bold" }}>College:</span>
+              {certificateMetaData.data.college}
+            </div>
+            <div style={{ margin: "5px auto" }}>
+              <span style={{ fontWeight: "bold" }}>Batch:</span>
+              {certificateMetaData.data.batch}
+            </div>
+            <div style={{ margin: "5px auto" }}>
+              <span style={{ fontWeight: "bold" }}>Degree:</span>
+              {certificateMetaData.data.degree}
+            </div>
+            <div style={{ margin: "5px auto" }}>
+              <span style={{ fontWeight: "bold" }}>Department:</span>
+              {certificateMetaData.data.department}
+            </div>
+            <div style={{ margin: "5px auto" }}>
+              <span style={{ fontWeight: "bold" }}>Roll No:</span>
+              {certificateMetaData.data.rollNo}
             </div>
           </div>
         ) : (
