@@ -223,11 +223,11 @@ function Certificate() {
                 }}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `localhost:3000/view_certificate/${currentCertificate.cert.data.name}`
+                    `${process.env.REACT_APP_URL}/view_certificate/${currentCertificate.cert.data.name}`
                   );
                   alert("Copied link to clipboard");
                 }}
-              >{`localhost:3000/view_certificate/${currentCertificate.cert.data.name}`}</div>
+              >{`${process.env.REACT_APP_URL}/view_certificate/${currentCertificate.cert.data.name}`}</div>
               <div style={{ marginBottom: 5 }}>
                 Hedera FilleId: {currentCertificate.cert.data.hederaFileId}
               </div>

@@ -24,5 +24,5 @@ export const app = initializeApp(firebaseConfig);
 
 // TODO: change url to env var
 export const env = {
-    url: process.env.REACT_APP_URL || 'http://localhost:5000'
+    url: process.env.REACT_APP_URL
 }

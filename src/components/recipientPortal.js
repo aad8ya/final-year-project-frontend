@@ -186,12 +186,12 @@ function RecipientPortal() {
                     }}
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        `localhost:3000/view_certificate/${currentCertificate.cert.data.name}`
+                        `${process.env.REACT_APP_URL}/view_certificate/${currentCertificate.cert.data.name}`
                       );
                       alert("Copied link to clipboard");
                     }}
                   >
-                    {`localhost:3000/view_certificate/${currentCertificate.cert.data.name}`}
+                    {`${process.env.REACT_APP_URL}/view_certificate/${currentCertificate.cert.data.name}`}
                   </div>
                   <div>
                     <div
