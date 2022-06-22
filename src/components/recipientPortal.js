@@ -200,8 +200,8 @@ function RecipientPortal() {
                         margin: "auto 5px",
                         border: "1px solid #BED7E1",
                       }}
-                      onClick={() => {
-                        api.toggleCertificateSharing(
+                      onClick={async () => {
+                        await api.toggleCertificateSharing(
                           currentCertificate.cert.id,
                           !currentCertificate.cert.data.isShareable
                         );

@@ -215,7 +215,7 @@ export const getMyCertificates = async (email) => {
 export const toggleCertificateSharing = async (certificateID, state) => {
   const db = getFirestore();
   const docRef = await doc(db, "certificates", certificateID);
-  const result = updateDoc(docRef, { isShareable: state });
+  const result = await updateDoc(docRef, { isShareable: state });
   console.log(result);
   return result;
 };
