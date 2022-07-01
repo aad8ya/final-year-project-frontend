@@ -223,11 +223,11 @@ function Certificate() {
                 }}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `${process.env.REACT_APP_URL}/view_certificate/${currentCertificate.cert.data.name}`
+                    `https://rajasekar-frontend.netlify.app/view_certificate/${currentCertificate.cert.data.name}`
                   );
                   alert("Copied link to clipboard");
                 }}
-              >{`${process.env.REACT_APP_URL}/view_certificate/${currentCertificate.cert.data.name}`}</div>
+              >{`https://rajasekar-frontend.netlify.app/view_certificate/${currentCertificate.cert.data.name}`}</div>
               <div style={{ marginBottom: 5 }}>
                 Hedera FilleId: {currentCertificate.cert.data.hederaFileId}
               </div>
